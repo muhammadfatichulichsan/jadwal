@@ -15,6 +15,7 @@
         --accent: #27ae60;
         --danger: #e74c3c;
         --warning: #f39c12;
+        --info: #3498db;
         --bg: #f4f6f8;
         --card-bg: #ffffff;
         --text-main: #2d3748;
@@ -74,14 +75,66 @@
     }
     .btn-auth:active { transform: scale(0.95); }
 
-    /* === CONTROLS === */
+    /* === RECAP BOX === */
+    #recapContainer {
+        display: none; /* Hidden by default */
+        background: var(--primary);
+        color: white;
+        border-radius: var(--radius);
+        padding: 15px;
+        margin-bottom: 20px;
+        box-shadow: var(--shadow-md);
+    }
+    .recap-header {
+        font-weight: 700;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+        padding-bottom: 8px;
+        margin-bottom: 10px;
+        font-size: 0.95rem;
+        display: flex;
+        justify-content: space-between;
+    }
+    .recap-grid {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+        font-size: 0.9rem;
+    }
+    .recap-row {
+        display: contents;
+    }
+    .recap-name { text-transform: capitalize; } /* Otomatis Kapital Awal Kata */
+    .recap-val { font-weight: 600; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 4px; text-align: center; }
+    .recap-total {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid rgba(255,255,255,0.2);
+        font-weight: 700;
+        color: #f1c40f;
+    }
+
+    /* === CONTROLS & SEARCH === */
     .controls { 
         background: var(--card-bg); 
         padding: 15px; 
         border-radius: var(--radius); 
         box-shadow: var(--shadow-md); 
-        margin-bottom: 20px; 
+        margin-bottom: 15px; 
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
     }
+    
+    .control-group label {
+        font-size: 0.75rem; 
+        font-weight: 700; 
+        color: #718096; 
+        text-transform: uppercase; 
+        margin-bottom: 5px; 
+        display: block;
+        letter-spacing: 0.5px;
+    }
+
     select { 
         width: 100%; 
         padding: 12px 15px; 
@@ -96,6 +149,33 @@
         transition: border-color 0.2s;
     }
     select:focus { border-color: var(--primary); }
+
+    /* Search Bar Styles */
+    .search-wrapper {
+        position: relative;
+    }
+    .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        pointer-events: none;
+    }
+    .search-input {
+        width: 100%;
+        padding: 12px 15px 12px 40px; /* Padding left for icon */
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        font-size: 1rem;
+        outline: none;
+        font-family: inherit;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+    }
 
     /* === ACCORDION LIST === */
     .accordion-item { 
@@ -256,6 +336,47 @@
     .m-body { flex: 1; overflow-y: auto; padding: 25px; }
     .m-footer { padding: 20px 25px; border-top: 1px solid var(--border); background: #fff; padding-bottom: max(20px, env(safe-area-inset-bottom)); }
 
+    /* === FORM === */
+    .form-group { margin-bottom: 20px; }
+    .form-label { 
+        display: block; 
+        margin-bottom: 8px; 
+        font-weight: 600; 
+        font-size: 0.9rem; 
+        color: var(--text-main); 
+    }
+    .form-input { 
+        width: 100%; 
+        padding: 14px; 
+        border: 2px solid var(--border); 
+        border-radius: 10px; 
+        font-size: 1rem; 
+        font-family: inherit; 
+        background: #f8fafc; 
+        transition: all 0.2s; 
+        -webkit-appearance: none;
+    }
+    .form-input:focus { 
+        border-color: var(--primary); 
+        background: #fff; 
+        box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1); 
+        outline: none;
+    }
+    
+    .btn-block { 
+        width: 100%; 
+        padding: 16px; 
+        border: none; 
+        border-radius: 12px; 
+        font-weight: 700; 
+        font-size: 1rem; 
+        cursor: pointer; 
+        letter-spacing: 0.5px;
+        transition: opacity 0.2s;
+    }
+    .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3); }
+    .btn-primary:active { opacity: 0.9; transform: translateY(1px); }
+
     /* === LOADING & TOAST === */
     #loadingOverlay { 
         display: none; 
@@ -280,6 +401,7 @@
     }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+    /* Toast Notification */
     #syncToast {
         position: fixed;
         bottom: 20px;
@@ -317,13 +439,32 @@
 <div class="container">
     <div class="app-header">
         <h3 class="app-title">Canyoning Pacet</h3>
-        <button id="authBtn" class="btn-auth" onclick="toggleAuth()">Login Admin</button>
+        <button id="authBtn" class="btn-auth" onclick="toggleAuth()">Login</button>
+    </div>
+
+    <div id="recapContainer">
+        <div class="recap-header">
+            <span>📊 Rekap Kinerja PIC</span>
+            <span style="font-size:0.8em; opacity:0.8;">Berdasarkan data tampil</span>
+        </div>
+        <div class="recap-grid" id="recapBody">
+            </div>
+        <div class="recap-grid recap-total" id="recapTotal">
+            </div>
     </div>
 
     <div class="controls">
-        <label style="font-size: 0.8rem; font-weight: 700; color: #718096; text-transform: uppercase; margin-bottom: 5px; display: block;">Pilih Jadwal</label>
-        <select id="sheetSelector" onchange="loadSheetData(this.value, false)"></select>
+        <div class="control-group">
+            <label>Pilih Jadwal</label>
+            <select id="sheetSelector" onchange="loadSheetData(this.value, false)"></select>
+        </div>
+        
+        <div class="control-group search-wrapper">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="searchInput" class="search-input" placeholder="Cari nama, pax, atau catatan..." oninput="handleSearch(this.value)">
+        </div>
     </div>
+
     <div id="scheduleList"></div>
 </div>
 
@@ -356,23 +497,33 @@
 <script>
     // === KONFIGURASI ===
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_M5BxmfqrI8e4dlaJ-pu4Fxk1zB6tXMF8zc6mfS4NLmvr_WB2SljGp3LHUa0iQTMymw/exec"; 
-    const ADMIN_PASS = "1234tos"; 
+    
+    // PASSWORD SYSTEM
+    const ADMIN_PASS = "1234tos"; // Password untuk Edit/Hapus
+    const RECAP_PASS = "data"; // Password untuk Lihat Rekap PIC
+    
     const HIDE_KEYWORDS = []; 
 
     let CACHED_HEADERS = [];
     let CURRENT_GID = "";
     let EDIT_ROW_INDEX = null; 
     let CURRENT_ACTION = "";
-    let IS_ADMIN = false; 
     
-    // === MEMORY (Agar posisi tidak reset) ===
-    let LAST_OPENED_DATE = null; // Menyimpan tanggal yang sedang dibuka
-    let LAST_SCROLL_POS = 0;     // Menyimpan posisi scroll
+    // FLAGS PERMISSION
+    let IS_ADMIN = false; 
+    let IS_RECAP = false;
+
+    let PRESERVED_SCROLL = 0; 
+    let PROCESSED_CACHE = [];
 
     // === CACHE MANAGER ===
     const Cache = {
-        set: (key, data) => { try { localStorage.setItem(key, JSON.stringify(data)); } catch(e){} },
-        get: (key) => { try { return JSON.parse(localStorage.getItem(key)); } catch(e){ return null; } },
+        set: (key, data) => {
+            try { localStorage.setItem(key, JSON.stringify(data)); } catch(e){}
+        },
+        get: (key) => {
+            try { return JSON.parse(localStorage.getItem(key)); } catch(e){ return null; }
+        },
         remove: (key) => localStorage.removeItem(key)
     };
 
@@ -380,6 +531,7 @@
 
     async function init() {
         checkSession(); 
+
         const cachedSheets = Cache.get('CP_SHEETS');
         if (cachedSheets) {
             populateSheetSelector(cachedSheets);
@@ -389,33 +541,43 @@
         }
 
         try {
-            if(cachedSheets) showSyncToast(true);
+            if(cachedSheets) showSyncToast(true); 
             let response = await fetch(SCRIPT_URL);
             let sheets = await response.json();
             
-            Cache.set('CP_SHEETS', sheets);
+            Cache.set('CP_SHEETS', sheets); 
             populateSheetSelector(sheets);
-            if (!cachedSheets) autoSelectSheet(sheets, false);
             
+            if (!cachedSheets) {
+                autoSelectSheet(sheets, false);
+            }
             showSyncToast(false);
             showLoading(false);
+
         } catch (err) {
             console.error("Network error:", err);
-            if (!cachedSheets) { alert("Gagal koneksi. Coba lagi."); showLoading(false); }
+            if (!cachedSheets) {
+                alert("Gagal koneksi. Coba lagi.");
+                showLoading(false);
+            }
         }
     }
 
     function populateSheetSelector(sheets) {
         const select = document.getElementById('sheetSelector');
-        const currentVal = select.value;
+        const currentVal = select.value; 
         select.innerHTML = "";
+        
         sheets.forEach(sheet => {
             let opt = document.createElement('option');
             opt.value = sheet.gid;
             opt.innerText = sheet.name;
             select.appendChild(opt);
         });
-        if (currentVal && Array.from(select.options).some(o => o.value === currentVal)) select.value = currentVal;
+
+        if (currentVal && Array.from(select.options).some(o => o.value === currentVal)) {
+            select.value = currentVal;
+        }
     }
 
     function autoSelectSheet(sheets, isFromCache) {
@@ -435,49 +597,68 @@
         }
     }
 
-    // === AUTH LOGIC ===
+    // === AUTH LOGIC UPDATED ===
     function checkSession() {
-        const session = localStorage.getItem('cp_is_admin');
-        IS_ADMIN = (session === 'true');
+        // Cek keduanya secara terpisah
+        IS_ADMIN = localStorage.getItem('cp_is_admin') === 'true';
+        IS_RECAP = localStorage.getItem('cp_is_recap') === 'true';
         updateUIAuth();
     }
 
     function toggleAuth() {
-        if (IS_ADMIN) {
-            if(confirm("Logout dari admin?")) {
+        if (IS_ADMIN || IS_RECAP) {
+            if(confirm("Logout dari sesi ini?")) {
                 IS_ADMIN = false;
+                IS_RECAP = false;
                 localStorage.removeItem('cp_is_admin');
+                localStorage.removeItem('cp_is_recap');
                 updateUIAuth();
-                loadSheetData(CURRENT_GID, false); 
+                // Refresh view untuk sembunyikan tombol edit/rekap
+                handleSearch(document.getElementById('searchInput').value);
             }
         } else {
-            let pass = prompt("Masukkan Password Admin:");
+            let pass = prompt("Masukkan Password:");
             if (pass === ADMIN_PASS) {
                 IS_ADMIN = true;
                 localStorage.setItem('cp_is_admin', 'true');
-                updateUIAuth();
-                loadSheetData(CURRENT_GID, false); 
-            } else if (pass !== null) alert("Password Salah!");
+                alert("Login Admin Berhasil (Mode Edit).");
+            } else if (pass === RECAP_PASS) {
+                IS_RECAP = true;
+                localStorage.setItem('cp_is_recap', 'true');
+                alert("Login Rekap Berhasil (Mode View PIC).");
+            } else if (pass !== null) {
+                alert("Password Salah!");
+                return;
+            }
+            updateUIAuth();
+            handleSearch(document.getElementById('searchInput').value);
         }
     }
 
     function updateUIAuth() {
         const btn = document.getElementById('authBtn');
         const fab = document.getElementById('fabAdd');
-        if (IS_ADMIN) {
+        
+        // Atur Button Header
+        if (IS_ADMIN || IS_RECAP) {
             btn.innerText = "Logout";
             btn.classList.add('logout');
-            fab.style.display = 'flex'; 
         } else {
-            btn.innerText = "Login Admin";
+            btn.innerText = "Login";
             btn.classList.remove('logout');
-            fab.style.display = 'none'; 
         }
+
+        // FAB Hanya untuk Admin Edit
+        fab.style.display = IS_ADMIN ? 'flex' : 'none';
+        
+        // Recap Container Hanya untuk Admin Rekap
+        document.getElementById('recapContainer').style.display = IS_RECAP ? 'block' : 'none';
     }
 
     // === DATA LOADING ===
     async function loadSheetData(gid, isInitialCacheLoad = false) {
         CURRENT_GID = gid;
+        document.getElementById('searchInput').value = ""; 
         const container = document.getElementById('scheduleList');
         const cacheKey = `SHEET_DATA_${gid}`;
 
@@ -485,7 +666,7 @@
         
         if (cachedData) {
             processAndRender(cachedData);
-            if (!isInitialCacheLoad) showSyncToast(true);
+            if (!isInitialCacheLoad) showSyncToast(true); 
         } else {
             showLoading(true, "Mengambil Data...");
         }
@@ -499,41 +680,123 @@
             
             showSyncToast(false);
             showLoading(false);
+
         } catch (err) {
             console.error(err);
-            if (!cachedData) container.innerHTML = `<div style='color:red; text-align:center; padding:20px;'>Gagal memuat data.</div>`;
+            if (!cachedData) {
+                container.innerHTML = `<div style='color:red; text-align:center; padding:20px;'>Gagal memuat data. Periksa koneksi.</div>`;
+            }
             showSyncToast(false);
             showLoading(false);
         }
     }
 
     function processAndRender(rawData) {
+        const container = document.getElementById('scheduleList');
         if (!rawData || rawData.length < 2) {
-            document.getElementById('scheduleList').innerHTML = "<div style='text-align:center; padding:40px; color:#718096;'>📭 Data masih kosong.</div>";
+            container.innerHTML = "<div style='text-align:center; padding:40px; color:#718096;'>📭 Data masih kosong.</div>";
+            PROCESSED_CACHE = []; 
             return;
         }
+
         CACHED_HEADERS = rawData[0]; 
         const rows = rawData.slice(1);
-        renderSchedule(CACHED_HEADERS, processData(rows));
+        
+        PROCESSED_CACHE = processData(rows);
+        
+        renderSchedule(CACHED_HEADERS, PROCESSED_CACHE);
     }
 
     function processData(rows) {
         let result = []; 
         let lastDateRaw = null; 
+
         rows.forEach(row => {
             let rowIndex = row[row.length - 1]; 
             let cleanRow = row.slice(0, row.length - 1); 
             let date = cleanRow[0];
-            if ((!date || date.toString().trim() === "") && lastDateRaw) date = lastDateRaw; 
-            else if (date) lastDateRaw = date; 
-            if (date) cleanRow[0] = formatIsoToIndo(date); 
+
+            if ((!date || date.toString().trim() === "") && lastDateRaw) {
+                date = lastDateRaw; 
+            } else if (date) {
+                lastDateRaw = date; 
+            }
+            
+            if (date) {
+                cleanRow[0] = formatIsoToIndo(date); 
+            }
+
             result.push({ data: cleanRow, rowIndex: rowIndex });
         });
         return result;
     }
 
-    function renderSchedule(headers, processedRows) {
+    // === SEARCH & RECAP LOGIC ===
+    function handleSearch(keyword) {
+        let rowsToRender = PROCESSED_CACHE;
+
+        if (keyword) {
+            const lowerKey = keyword.toLowerCase();
+            rowsToRender = PROCESSED_CACHE.filter(item => {
+                return item.data.some(cell => String(cell).toLowerCase().includes(lowerKey));
+            });
+            renderSchedule(CACHED_HEADERS, rowsToRender, true); // Expand if searching
+        } else {
+            renderSchedule(CACHED_HEADERS, rowsToRender, false);
+        }
+    }
+
+    function generateRecapHTML(headers, rows) {
+        if (!IS_RECAP) return; 
+
+        let picIndex = headers.findIndex(h => ['pic', 'guide', 'pemandu', 'tl', 'tour leader'].some(k => h.toLowerCase().includes(k)));
+        let paxIndex = headers.findIndex(h => ['pax', 'jumlah', 'org', 'orang'].some(k => h.toLowerCase().includes(k)));
+        
+        if (paxIndex === -1) paxIndex = 1;
+        
+        let stats = {};
+        let grandTotal = 0;
+
+        rows.forEach(item => {
+            let rawName = (picIndex !== -1 && item.data[picIndex]) ? item.data[picIndex] : "Tanpa PIC";
+            
+            // === LOGIKA PENGELOMPOKAN (NORMALISASI) ===
+            // 1. Ubah ke lowercase
+            // 2. Trim spasi kiri kanan
+            // 3. Ganti spasi ganda/tab dengan spasi tunggal (Regex \s+)
+            let keyName = rawName.toLowerCase().trim().replace(/\s+/g, ' ');
+
+            if(keyName === "" || keyName === "-") keyName = "belum ditentukan";
+
+            let pax = parseInt(item.data[paxIndex]) || 0;
+            
+            if (!stats[keyName]) stats[keyName] = 0;
+            stats[keyName] += pax;
+            grandTotal += pax;
+        });
+
+        const bodyEl = document.getElementById('recapBody');
+        const totalEl = document.getElementById('recapTotal');
+        
+        let sortedKeys = Object.keys(stats).sort((a,b) => stats[b] - stats[a]);
+        
+        let html = "";
+        sortedKeys.forEach(name => {
+            // CSS .recap-name { text-transform: capitalize; } akan otomatis merapikan tampilan
+            html += `<div class="recap-row"><span class="recap-name">${name}</span><span class="recap-val">${stats[name]}</span></div>`;
+        });
+
+        bodyEl.innerHTML = html || "<div style='grid-column:1/-1; text-align:center; opacity:0.7'>Tidak ada data pax</div>";
+        totalEl.innerHTML = `<div class="recap-row"><span>TOTAL KESELURUHAN</span><span class="recap-val" style="background:rgba(255,255,255,0.3)">${grandTotal}</span></div>`;
+    }
+
+    function renderSchedule(headers, processedRows, expandAll = false) {
         const container = document.getElementById('scheduleList');
+        const currentScroll = window.scrollY;
+
+        // Update Recap Box setiap kali render
+        generateRecapHTML(headers, processedRows);
+
         let groups = {};
         processedRows.forEach(item => {
             let d = item.data[0];
@@ -550,6 +813,11 @@
         if (paxIndexCalc === -1) paxIndexCalc = 1;
 
         let htmlContent = "";
+        
+        if (processedRows.length === 0) {
+            container.innerHTML = "<div style='text-align:center; padding:30px; color:#718096;'>Tidak ditemukan data.</div>";
+            return;
+        }
 
         for (let date in groups) {
             let items = groups[date];
@@ -557,19 +825,24 @@
             
             let isFull = totalGuest >= 20; 
             let badgeText = isFull ? "⛔ FULL" : `👥 ${totalGuest} Pax`;
-            let badgeStyle = isFull ? "background:#fed7d7; color:#c53030; border:1px solid #fc8181;" : "background:#e2e8f0; color:#4a5568;";
+            let badgeStyle = isFull
+                ? "background:#fed7d7; color:#c53030; border:1px solid #fc8181;" 
+                : "background:#e2e8f0; color:#4a5568;";
             
             let headerHTML = headers.map((h, i) => hiddenIndices.includes(i) ? '' : `<th>${h}</th>`).join('');
             let actionHeader = IS_ADMIN ? '<th style="text-align:center">Aksi</th>' : '';
             let rowsHTML = items.map(item => createRowHTML(item, hiddenIndices)).join('');
+            
+            let bodyStyle = expandAll ? `style="max-height: 5000px;"` : ""; 
+            let headerBg = expandAll ? `style="background: #f7fafc;"` : "";
 
             htmlContent += `
                 <div class="accordion-item">
-                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="accordion-header" onclick="toggleAccordion(this)" ${headerBg}>
                         <span class="date">${date}</span>
                         <span class="count" style="${badgeStyle}">${badgeText}</span>
                     </div>
-                    <div class="accordion-body">
+                    <div class="accordion-body" ${bodyStyle}>
                         <div class="table-responsive">
                             <table>
                                 <thead><tr>${headerHTML}${actionHeader}</tr></thead>
@@ -583,23 +856,12 @@
         
         container.innerHTML = htmlContent;
 
-        // === LOGIKA RESTORE POSISI ===
-        // 1. Buka kembali accordion yang terakhir dibuka
-        if (LAST_OPENED_DATE) {
-            const headers = document.querySelectorAll('.accordion-header');
-            for (let h of headers) {
-                if (h.querySelector('.date').innerText === LAST_OPENED_DATE) {
-                    toggleAccordion(h); // Buka kembali
-                    break;
-                }
+        if (!expandAll) {
+            let targetScroll = PRESERVED_SCROLL > 0 ? PRESERVED_SCROLL : currentScroll;
+            if (targetScroll > 0) {
+                window.scrollTo(0, targetScroll);
+                PRESERVED_SCROLL = 0; 
             }
-        }
-
-        // 2. Kembalikan posisi scroll jika ada history
-        if (LAST_SCROLL_POS > 0) {
-            setTimeout(() => {
-                window.scrollTo(0, LAST_SCROLL_POS);
-            }, 50); // Delay sedikit agar DOM selesai render
         }
     }
 
@@ -616,20 +878,12 @@
 
     function toggleAccordion(header) {
         let body = header.nextElementSibling;
-        let dateText = header.querySelector('.date').innerText;
-
         if (body.style.maxHeight) {
-            // Menutup
             body.style.maxHeight = null;
             header.style.background = "var(--card-bg)";
-            LAST_OPENED_DATE = null; 
         } else {
-            // Membuka (Tutup yang lain jika mau accordion behavior strict)
-            // document.querySelectorAll('.accordion-body').forEach(b => b.style.maxHeight = null);
-            
             body.style.maxHeight = body.scrollHeight + "px";
             header.style.background = "#f7fafc"; 
-            LAST_OPENED_DATE = dateText; // Simpan state
         }
     }
 
@@ -670,9 +924,8 @@
 
     async function submitCRUD() {
         if (!confirm("Simpan perubahan ini?")) return;
-        
-        // Simpan posisi scroll sebelum loading muncul
-        LAST_SCROLL_POS = window.scrollY;
+
+        PRESERVED_SCROLL = window.scrollY;
 
         showLoading(true, "Menyimpan ke Database...");
         closeCRUDModal();
@@ -691,9 +944,9 @@
 
     async function confirmDelete(rowIndex, name) {
         if (confirm(`Yakin ingin menghapus "${name}"?`)) {
-            // Simpan posisi scroll sebelum proses hapus
-            LAST_SCROLL_POS = window.scrollY;
             
+            PRESERVED_SCROLL = window.scrollY;
+
             showLoading(true, "Menghapus Data...");
             let payload = { action: "DELETE", gid: CURRENT_GID, rowIndex: rowIndex, data: [] };
             await sendToAppsScript(payload);
@@ -703,6 +956,7 @@
     async function sendToAppsScript(payload) {
         try {
             Cache.remove(`SHEET_DATA_${CURRENT_GID}`);
+
             let res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
             let result = await res.json();
             
