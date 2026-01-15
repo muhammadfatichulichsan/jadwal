@@ -35,7 +35,6 @@
 </script>
 
 <style>
-    /* CSS ANDA TETAP SAMA */
     /* === GLOBAL VARS & RESET === */
     :root {
         --primary: #2c3e50;
@@ -70,10 +69,6 @@
         user-select: none;
     }
 
-    /* ... (SISA CSS ANDA SAMA SEPERTI YANG ANDA KIRIM SEBELUMNYA) ... */
-    /* Agar tidak terlalu panjang di chat, saya persingkat bagian CSS. 
-       PASTIKAN ANDA MENYALIN SEMUA CSS ASLI ANDA KE SINI */
-    
     .container { max-width: 800px; margin: 20px auto 0; padding: 0 15px; position: relative; z-index: 101; }
     .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
     .app-title { font-weight: 700; font-size: 1.2rem; color: var(--primary); margin: 0; }
@@ -113,6 +108,7 @@
     .btn-edit { color: var(--warning); border-color: #fde68a; background: #fffbeb; }
     .btn-del { color: var(--danger); border-color: #fecaca; background: #fef2f2; }
     .btn-icon:active { transform: scale(0.9); }
+    /* FAB STYLE DIHAPUS PUN TIDAK APA-APA, TAPI DIBIARKAN JUGA TIDAK MASALAH KARENA ELEMENTNYA HILANG */
     .fab { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background: var(--accent); color: white; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 8px 20px rgba(39, 174, 96, 0.4); cursor: pointer; z-index: 999; transition: transform 0.2s; }
     .fab:active { transform: scale(0.9); }
     .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(4px); align-items: flex-end; opacity: 0; transition: opacity 0.3s; }
@@ -169,8 +165,6 @@
 
     <div id="scheduleList"></div>
 </div>
-
-<div class="fab" id="fabAdd" onclick="openCRUDModal('CREATE')">+</div>
 
 <div id="loadingOverlay">
     <div class="spinner"></div>
@@ -330,7 +324,7 @@
 
     function updateUIAuth() {
         const btn = document.getElementById('authBtn');
-        const fab = document.getElementById('fabAdd');
+        // KODE TOMBOL FAB DIHAPUS DARI SINI
         if (IS_ADMIN || IS_RECAP) {
             btn.innerText = "Logout";
             btn.classList.add('logout');
@@ -338,7 +332,7 @@
             btn.innerText = "Login";
             btn.classList.remove('logout');
         }
-        fab.style.display = IS_ADMIN ? 'flex' : 'none';
+        // KODE DISPLAY FAB DIHAPUS DARI SINI
         document.getElementById('recapContainer').style.display = IS_RECAP ? 'block' : 'none';
     }
 
