@@ -12,7 +12,6 @@
     document.addEventListener('contextmenu', event => event.preventDefault());
     
     document.onkeydown = function(e) {
-        // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
         if (
             e.keyCode == 123 || 
             (e.ctrlKey && e.shiftKey && e.keyCode == 73) || 
@@ -70,11 +69,18 @@
     }
 
     .container { max-width: 800px; margin: 20px auto 0; padding: 0 15px; position: relative; z-index: 101; }
-    .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .app-title { font-weight: 700; font-size: 1.2rem; color: var(--primary); margin: 0; }
+    .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+    .app-title { font-weight: 700; font-size: 1.2rem; color: var(--primary); margin: 0; flex-grow: 1; }
+    
+    .header-actions { display: flex; gap: 8px; }
     .btn-auth { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
     .btn-auth.logout { border-color: var(--danger); color: var(--danger); }
     .btn-auth:active { transform: scale(0.95); }
+    
+    /* Tombol Global Recap */
+    .btn-global-recap { display:none; background: var(--accent); border: 1px solid var(--accent); color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+    .btn-global-recap:active { transform: scale(0.95); opacity: 0.9; }
+
     #recapContainer { display: none; background: var(--primary); color: white; border-radius: var(--radius); padding: 15px; margin-bottom: 20px; box-shadow: var(--shadow-md); }
     .recap-header { font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 8px; margin-bottom: 10px; font-size: 0.95rem; display: flex; justify-content: space-between; }
     .recap-grid { display: grid; grid-template-columns: 1fr auto; gap: 8px; font-size: 0.9rem; }
@@ -82,6 +88,7 @@
     .recap-name { text-transform: capitalize; }
     .recap-val { font-weight: 600; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 4px; text-align: center; }
     .recap-total { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.2); font-weight: 700; color: #f1c40f; }
+    
     .controls { background: var(--card-bg); padding: 15px; border-radius: var(--radius); box-shadow: var(--shadow-md); margin-bottom: 15px; display: flex; flex-direction: column; gap: 12px; }
     .control-group label { font-size: 0.75rem; font-weight: 700; color: #718096; text-transform: uppercase; margin-bottom: 5px; display: block; letter-spacing: 0.5px; }
     select { width: 100%; padding: 12px 15px; font-size: 1rem; border: 2px solid var(--border); border-radius: 8px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23718096' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E") no-repeat calc(100% - 15px) center; appearance: none; outline: none; color: var(--text-main); font-family: inherit; transition: border-color 0.2s; }
@@ -108,9 +115,7 @@
     .btn-edit { color: var(--warning); border-color: #fde68a; background: #fffbeb; }
     .btn-del { color: var(--danger); border-color: #fecaca; background: #fef2f2; }
     .btn-icon:active { transform: scale(0.9); }
-    /* FAB STYLE DIHAPUS PUN TIDAK APA-APA, TAPI DIBIARKAN JUGA TIDAK MASALAH KARENA ELEMENTNYA HILANG */
-    .fab { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background: var(--accent); color: white; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 8px 20px rgba(39, 174, 96, 0.4); cursor: pointer; z-index: 999; transition: transform 0.2s; }
-    .fab:active { transform: scale(0.9); }
+    
     .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(4px); align-items: flex-end; opacity: 0; transition: opacity 0.3s; }
     .modal.show { display: flex; opacity: 1; }
     .modal-content { background-color: var(--card-bg); width: 100%; height: 85%; border-radius: 24px 24px 0 0; display: flex; flex-direction: column; box-shadow: 0 -10px 40px rgba(0,0,0,0.2); animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -132,6 +137,12 @@
     #syncToast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(44, 62, 80, 0.9); color: white; padding: 10px 20px; border-radius: 30px; font-size: 0.85rem; display: flex; align-items: center; gap: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 2999; opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.3s; transform: translate(-50%, 20px); }
     #syncToast.show { opacity: 1; transform: translate(-50%, 0); }
     .mini-spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white; border-radius: 50%; animation: spin 0.8s linear infinite; }
+    
+    /* Global Recap Specific */
+    .global-recap-list .recap-row { padding: 8px 0; border-bottom: 1px solid #eee; }
+    .global-recap-list .recap-name { font-weight: 500; }
+    .global-recap-list .recap-val { color: var(--primary); background: #edf2f7; color: var(--text-main); }
+    .global-total-big { font-size: 1.5rem; text-align: center; color: var(--accent); font-weight: 800; padding: 10px; background: #f0fff4; border-radius: 8px; margin-bottom: 15px; border: 1px solid #c6f6d5; }
 </style>
 </head>
 <body>
@@ -139,12 +150,15 @@
 <div class="container">
     <div class="app-header">
         <h3 class="app-title">Admin Canyoning Pacet</h3>
-        <button id="authBtn" class="btn-auth" onclick="toggleAuth()">Login</button>
+        <div class="header-actions">
+            <button id="globalRecapBtn" class="btn-global-recap" onclick="openGlobalRecap()">📈 Global Rekap</button>
+            <button id="authBtn" class="btn-auth" onclick="toggleAuth()">Login</button>
+        </div>
     </div>
 
     <div id="recapContainer">
         <div class="recap-header">
-            <span>📊 Rekap Kinerja PIC</span>
+            <span>📊 Rekap Kinerja PIC (Sheet Ini)</span>
             <span style="font-size:0.8em; opacity:0.8;">Berdasarkan data tampil</span>
         </div>
         <div class="recap-grid" id="recapBody"></div>
@@ -186,6 +200,22 @@
             </div>
         <div class="m-footer">
             <button class="btn-block btn-primary" onclick="submitCRUD()">SIMPAN DATA</button>
+        </div>
+    </div>
+</div>
+
+<div id="globalRecapModal" class="modal">
+    <div class="modal-content">
+        <div class="m-header">
+            <h4>📈 Rekap Total Semua Sheet</h4>
+            <div onclick="document.getElementById('globalRecapModal').classList.remove('show')" style="font-size:24px; cursor:pointer; padding: 5px; color: #a0aec0;">&times;</div>
+        </div>
+        <div class="m-body">
+            <div id="globalTotalDisplay" class="global-total-big">Loading...</div>
+            <div class="recap-grid global-recap-list" id="globalRecapList"></div>
+        </div>
+        <div class="m-footer">
+             <button class="btn-block btn-primary" onclick="document.getElementById('globalRecapModal').classList.remove('show')">TUTUP</button>
         </div>
     </div>
 </div>
@@ -324,7 +354,9 @@
 
     function updateUIAuth() {
         const btn = document.getElementById('authBtn');
-        // KODE TOMBOL FAB DIHAPUS DARI SINI
+        const globalBtn = document.getElementById('globalRecapBtn');
+        
+        // LOGIKA TOMBOL LOGOUT (Muncul untuk Admin Edit maupun Admin Data)
         if (IS_ADMIN || IS_RECAP) {
             btn.innerText = "Logout";
             btn.classList.add('logout');
@@ -332,7 +364,16 @@
             btn.innerText = "Login";
             btn.classList.remove('logout');
         }
-        // KODE DISPLAY FAB DIHAPUS DARI SINI
+        
+        // LOGIKA TOMBOL GLOBAL REKAP (KHUSUS ADMIN DATA / RECAP MODE)
+        // Tombol ini HANYA MUNCUL jika login menggunakan password 'data'
+        if (IS_RECAP) {
+            globalBtn.style.display = 'block'; 
+        } else {
+            // Admin Edit (IS_ADMIN) maupun Public tidak akan melihat tombol ini
+            globalBtn.style.display = 'none'; 
+        }
+        
         document.getElementById('recapContainer').style.display = IS_RECAP ? 'block' : 'none';
     }
 
@@ -644,12 +685,93 @@
         let parts = cleanDate.split(' ').filter(part => part.trim() !== '');
         let day, monthName, year;
         if (parts.length === 4) { day = parts[1]; monthName = parts[2]; year = parts[3]; } 
-        else if (parts.length === 3) { day = parts[0]; monthName = parts[1]; year = parts[2]; } 
+        else if (parts.length === 3) { day = parts[0]; monthName = parts[1]; year = parts[2];   } 
         else return ""; 
         let month = monthMap[monthName.toLowerCase()];
         if (day && day.length === 1) day = "0" + day;
         if (day && month && year) return `${year}-${month}-${day}`;
         return "";
+    }
+
+    // === GLOBAL RECAP ===
+    async function openGlobalRecap() {
+        if (!IS_RECAP) return; // Security Check (Client-side)
+        
+        const modal = document.getElementById('globalRecapModal');
+        const listContainer = document.getElementById('globalRecapList');
+        const totalContainer = document.getElementById('globalTotalDisplay');
+        
+        modal.classList.add('show');
+        listContainer.innerHTML = "<div style='text-align:center; padding:20px'>Mengambil data dari semua sheet...</div>";
+        totalContainer.innerText = "...";
+        
+        showLoading(true, "Mengumpulkan Semua Data...");
+        
+        try {
+            // 1. Get List of All Sheets
+            let sheets = Cache.get('CP_SHEETS');
+            if (!sheets) {
+                let response = await fetch(SCRIPT_URL);
+                sheets = await response.json();
+                Cache.set('CP_SHEETS', sheets);
+            }
+
+            // 2. Fetch all data in parallel
+            const promises = sheets.map(sheet => 
+                fetch(`${SCRIPT_URL}?gid=${sheet.gid}`)
+                .then(r => r.json())
+                .then(data => ({ name: sheet.name, data: data }))
+                .catch(e => null) 
+            );
+
+            const allResults = await Promise.all(promises);
+            
+            // 3. Aggregate Data
+            let globalStats = {};
+            let globalGrandTotal = 0;
+
+            allResults.forEach(sheetResult => {
+                if (!sheetResult || !sheetResult.data || sheetResult.data.length < 2) return;
+                
+                const headers = sheetResult.data[0];
+                const rows = sheetResult.data.slice(1);
+                
+                let picIndex = headers.findIndex(h => ['pic', 'guide', 'pemandu', 'tl', 'tour leader'].some(k => h.toLowerCase().includes(k)));
+                let paxIndex = headers.findIndex(h => ['pax', 'jumlah', 'org', 'orang'].some(k => h.toLowerCase().includes(k)));
+                if (paxIndex === -1) paxIndex = 1; 
+
+                rows.forEach(row => {
+                    let rawName = (picIndex !== -1 && row[picIndex]) ? row[picIndex] : "Tanpa PIC";
+                    let paxVal = parseInt(row[paxIndex]);
+                    
+                    if (isNaN(paxVal)) paxVal = 0;
+
+                    let keyName = rawName.toString().toLowerCase().trim().replace(/\s+/g, ' ');
+                    if(keyName === "" || keyName === "-") keyName = "belum ditentukan";
+
+                    if (!globalStats[keyName]) globalStats[keyName] = 0;
+                    globalStats[keyName] += paxVal;
+                    globalGrandTotal += paxVal;
+                });
+            });
+
+            // 4. Render
+            let sortedKeys = Object.keys(globalStats).sort((a,b) => globalStats[b] - globalStats[a]);
+            let html = "";
+            
+            sortedKeys.forEach(name => {
+                html += `<div class="recap-row"><span class="recap-name" style="text-transform:capitalize">${name}</span><span class="recap-val">${globalStats[name]}</span></div>`;
+            });
+
+            listContainer.innerHTML = html || "<div style='text-align:center'>Tidak ada data ditemukan.</div>";
+            totalContainer.innerHTML = `TOTAL: ${globalGrandTotal} PAX`;
+
+        } catch (e) {
+            console.error(e);
+            listContainer.innerHTML = "<div style='color:red; text-align:center'>Gagal mengambil data global.</div>";
+        } finally {
+            showLoading(false);
+        }
     }
 </script>
 
