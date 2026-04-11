@@ -22,7 +22,6 @@
         }
     }
     
-    // Mencegah console debug
     setInterval(function(){
         var before = new Date().getTime();
         debugger; 
@@ -61,7 +60,6 @@
         color: var(--text-main); 
         padding-bottom: 100px; 
         line-height: 1.5;
-        /* Disable selection text */
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
@@ -77,7 +75,6 @@
     .btn-auth.logout { border-color: var(--danger); color: var(--danger); }
     .btn-auth:active { transform: scale(0.95); }
     
-    /* Tombol Global Recap */
     .btn-global-recap { display:none; background: var(--accent); border: 1px solid var(--accent); color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
     .btn-global-recap:active { transform: scale(0.95); opacity: 0.9; }
 
@@ -138,7 +135,6 @@
     #syncToast.show { opacity: 1; transform: translate(-50%, 0); }
     .mini-spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white; border-radius: 50%; animation: spin 0.8s linear infinite; }
     
-    /* Global Recap Specific */
     .global-recap-list .recap-row { padding: 8px 0; border-bottom: 1px solid #eee; }
     .global-recap-list .recap-name { font-weight: 500; }
     .global-recap-list .recap-val { color: var(--primary); background: #edf2f7; color: var(--text-main); }
@@ -196,8 +192,7 @@
             <h4 id="crudTitle">Tambah Data</h4>
             <div onclick="closeCRUDModal()" style="font-size:24px; cursor:pointer; padding: 5px; color: #a0aec0;">&times;</div>
         </div>
-        <div class="m-body" id="crudFormBody">
-            </div>
+        <div class="m-body" id="crudFormBody"></div>
         <div class="m-footer">
             <button class="btn-block btn-primary" onclick="submitCRUD()">SIMPAN DATA</button>
         </div>
@@ -508,13 +503,13 @@
             let items = groups[date];
             let totalGuest = items.reduce((sum, item) => sum + (parseInt(item.data[paxIndexCalc]) || 0), 0);
             
-            // --- BAGIAN YANG DIUBAH: Sisa Slot & Libur Hari Jumat ---
+            // --- SISA SLOT DAN LOGIKA JUMAT LIBUR ---
             let maxSlot = 20;
             let sisaSlot = maxSlot - totalGuest;
-            if (sisaSlot < 0) sisaSlot = 0; // Mencegah tampilan angka minus
+            if (sisaSlot < 0) sisaSlot = 0; 
             
             let isFull = sisaSlot === 0; 
-            let isFriday = date.toLowerCase().includes("jumat"); // Deteksi hari jumat
+            let isFriday = date.toLowerCase().includes("jumat"); 
             
             let badgeText = "";
             let badgeStyle = "";
@@ -529,7 +524,6 @@
                 badgeText = `👥 Sisa Slot: ${sisaSlot} Pax`;
                 badgeStyle = "background:#e2e8f0; color:#4a5568;";
             }
-            // --------------------------------------------------------
             
             let headerHTML = headers.map((h, i) => hiddenIndices.includes(i) ? '' : `<th>${h}</th>`).join('');
             let actionHeader = IS_ADMIN ? '<th style="text-align:center">Aksi</th>' : '';
@@ -674,33 +668,79 @@
         else setTimeout(() => t.classList.remove('show'), 1000); 
     }
 
-    function formatIsoToIndo(isoDate) {
-        if (!isoDate) return "";
-        if (isoDate.includes(',')) return isoDate;
+    // === PERBAIKAN UTAMA PARSING TANGGAL ===
+    // Fungsi ini memaksa membaca tanggal apapun (DD/MM/YYYY, teks Indonesia, dll)
+    function parseAnyDate(dateStr) {
+        if (!dateStr) return null;
+        let cleanDate = dateStr.toString().trim();
+        
+        // Hapus nama hari jika sudah ada (misal: "Senin, 15 Agustus 2024")
+        if (cleanDate.includes(',')) {
+            cleanDate = cleanDate.split(',')[1].trim();
+        }
+
+        // Cek pola DD/MM/YYYY (misal: 15/10/2024)
+        let dmyMatch = cleanDate.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+        if (dmyMatch) {
+            return new Date(parseInt(dmyMatch[3]), parseInt(dmyMatch[2]) - 1, parseInt(dmyMatch[1]));
+        }
+        
+        // Cek pola YYYY-MM-DD (misal: 2024-10-15)
+        let ymdMatch = cleanDate.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/);
+        if (ymdMatch) {
+            return new Date(parseInt(ymdMatch[1]), parseInt(ymdMatch[2]) - 1, parseInt(ymdMatch[3]));
+        }
+
+        // Coba parser standar JS
+        let d = new Date(cleanDate);
+        if (!isNaN(d.getTime())) return d;
+        
+        // Coba parsing manual untuk teks Indonesia (misal: "15 Agustus" atau "15 okt 2024")
+        const monthMap = { "jan": 0, "januari": 0, "feb": 1, "februari": 1, "mar": 2, "maret": 2, "apr": 3, "april": 3, "mei": 4, "jun": 5, "juni": 5, "jul": 6, "juli": 6, "agu": 7, "agustus": 7, "sep": 8, "september": 8, "okt": 9, "oktober": 9, "nov": 10, "november": 10, "des": 11, "desember": 11 };
+        
+        let parts = cleanDate.toLowerCase().split(/[\s\-]+/); 
+        if (parts.length >= 2) {
+            let day = parseInt(parts[0]);
+            let monthName = parts[1];
+            let year = parts.length >= 3 ? parseInt(parts[2]) : new Date().getFullYear();
+            
+            let monthIndex = monthMap[monthName];
+            if (monthIndex !== undefined && !isNaN(day)) {
+                return new Date(year, monthIndex, day);
+            }
+        }
+        return null;
+    }
+
+    function formatIsoToIndo(rawDate) {
+        if (!rawDate) return "";
+        
+        let d = parseAnyDate(rawDate);
+        
+        // Jika teks gagal dibaca sistem sama sekali, kembalikan teks aslinya
+        if (!d) return rawDate; 
+        
         const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
         const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-        const d = new Date(isoDate);
-        if (isNaN(d.getTime())) return isoDate; 
+        
         let year = d.getFullYear();
-        if (year < 2024) { year = new Date().getFullYear(); d.setFullYear(year); }
-        // Format otomatis akan memunculkan: "Hari, Tanggal Bulan Tahun"
+        if (year < 2024) { 
+            year = new Date().getFullYear(); 
+            d.setFullYear(year); 
+        }
+        
         return `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${year}`;
     }
 
     function convertIndoToIso(indoDate) {
-        if (!indoDate) return "";
-        if (indoDate.includes('-') && !indoDate.includes(' ')) return indoDate;
-        const monthMap = { "januari": "01", "februari": "02", "maret": "03", "april": "04", "mei": "05", "juni": "06", "juli": "07", "agustus": "08", "september": "09", "oktober": "10", "november": "11", "desember": "12" };
-        let cleanDate = indoDate.replace(/,/g, ''); 
-        let parts = cleanDate.split(' ').filter(part => part.trim() !== '');
-        let day, monthName, year;
-        if (parts.length === 4) { day = parts[1]; monthName = parts[2]; year = parts[3]; } 
-        else if (parts.length === 3) { day = parts[0]; monthName = parts[1]; year = parts[2];   } 
-        else return ""; 
-        let month = monthMap[monthName.toLowerCase()];
-        if (day && day.length === 1) day = "0" + day;
-        if (day && month && year) return `${year}-${month}-${day}`;
-        return "";
+        let d = parseAnyDate(indoDate);
+        if (!d) return "";
+        
+        let year = d.getFullYear();
+        let month = (d.getMonth() + 1).toString().padStart(2, '0');
+        let day = d.getDate().toString().padStart(2, '0');
+        
+        return `${year}-${month}-${day}`;
     }
 
     // === GLOBAL RECAP ===
