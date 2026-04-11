@@ -221,13 +221,9 @@
 </div>
 
 <script>
-    // === SAYA SARANKAN ANDA MENG-OBFUSCATE BAGIAN INI SEBELUM UPLOAD ===
-    // Karena password "1234tos" masih bisa terbaca jika orang melihat Source Code di GitHub.
-    // Caranya ada di Langkah 2 di bawah.
-
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_M5BxmfqrI8e4dlaJ-pu4Fxk1zB6tXMF8zc6mfS4NLmvr_WB2SljGp3LHUa0iQTMymw/exec"; 
     
-    // PASSWORD SYSTEM (Hati-hati, ini terekspos di client-side)
+    // PASSWORD SYSTEM
     const ADMIN_PASS = "1234tos"; 
     const RECAP_PASS = "data"; 
     
@@ -356,7 +352,6 @@
         const btn = document.getElementById('authBtn');
         const globalBtn = document.getElementById('globalRecapBtn');
         
-        // LOGIKA TOMBOL LOGOUT (Muncul untuk Admin Edit maupun Admin Data)
         if (IS_ADMIN || IS_RECAP) {
             btn.innerText = "Logout";
             btn.classList.add('logout');
@@ -365,12 +360,9 @@
             btn.classList.remove('logout');
         }
         
-        // LOGIKA TOMBOL GLOBAL REKAP (KHUSUS ADMIN DATA / RECAP MODE)
-        // Tombol ini HANYA MUNCUL jika login menggunakan password 'data'
         if (IS_RECAP) {
             globalBtn.style.display = 'block'; 
         } else {
-            // Admin Edit (IS_ADMIN) maupun Public tidak akan melihat tombol ini
             globalBtn.style.display = 'none'; 
         }
         
@@ -516,11 +508,28 @@
             let items = groups[date];
             let totalGuest = items.reduce((sum, item) => sum + (parseInt(item.data[paxIndexCalc]) || 0), 0);
             
-            let isFull = totalGuest >= 20; 
-            let badgeText = isFull ? "⛔ FULL" : `👥 ${totalGuest} Pax`;
-            let badgeStyle = isFull
-                ? "background:#fed7d7; color:#c53030; border:1px solid #fc8181;" 
-                : "background:#e2e8f0; color:#4a5568;";
+            // --- BAGIAN YANG DIUBAH: Sisa Slot & Libur Hari Jumat ---
+            let maxSlot = 20;
+            let sisaSlot = maxSlot - totalGuest;
+            if (sisaSlot < 0) sisaSlot = 0; // Mencegah tampilan angka minus
+            
+            let isFull = sisaSlot === 0; 
+            let isFriday = date.toLowerCase().includes("jumat"); // Deteksi hari jumat
+            
+            let badgeText = "";
+            let badgeStyle = "";
+
+            if (isFriday) {
+                badgeText = "🏖️ LIBUR";
+                badgeStyle = "background:#fbd38d; color:#c05621; border:1px solid #f6ad55;";
+            } else if (isFull) {
+                badgeText = "⛔ FULL";
+                badgeStyle = "background:#fed7d7; color:#c53030; border:1px solid #fc8181;";
+            } else {
+                badgeText = `👥 Sisa Slot: ${sisaSlot} Pax`;
+                badgeStyle = "background:#e2e8f0; color:#4a5568;";
+            }
+            // --------------------------------------------------------
             
             let headerHTML = headers.map((h, i) => hiddenIndices.includes(i) ? '' : `<th>${h}</th>`).join('');
             let actionHeader = IS_ADMIN ? '<th style="text-align:center">Aksi</th>' : '';
@@ -674,6 +683,7 @@
         if (isNaN(d.getTime())) return isoDate; 
         let year = d.getFullYear();
         if (year < 2024) { year = new Date().getFullYear(); d.setFullYear(year); }
+        // Format otomatis akan memunculkan: "Hari, Tanggal Bulan Tahun"
         return `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${year}`;
     }
 
@@ -695,7 +705,7 @@
 
     // === GLOBAL RECAP ===
     async function openGlobalRecap() {
-        if (!IS_RECAP) return; // Security Check (Client-side)
+        if (!IS_RECAP) return; 
         
         const modal = document.getElementById('globalRecapModal');
         const listContainer = document.getElementById('globalRecapList');
@@ -708,7 +718,6 @@
         showLoading(true, "Mengumpulkan Semua Data...");
         
         try {
-            // 1. Get List of All Sheets
             let sheets = Cache.get('CP_SHEETS');
             if (!sheets) {
                 let response = await fetch(SCRIPT_URL);
@@ -716,7 +725,6 @@
                 Cache.set('CP_SHEETS', sheets);
             }
 
-            // 2. Fetch all data in parallel
             const promises = sheets.map(sheet => 
                 fetch(`${SCRIPT_URL}?gid=${sheet.gid}`)
                 .then(r => r.json())
@@ -726,7 +734,6 @@
 
             const allResults = await Promise.all(promises);
             
-            // 3. Aggregate Data
             let globalStats = {};
             let globalGrandTotal = 0;
 
@@ -755,7 +762,6 @@
                 });
             });
 
-            // 4. Render
             let sortedKeys = Object.keys(globalStats).sort((a,b) => globalStats[b] - globalStats[a]);
             let html = "";
             
