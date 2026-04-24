@@ -167,6 +167,12 @@
     ul.sk-list { padding-left: 20px; font-size: 0.95rem; color: var(--secondary); line-height: 1.6;}
     ul.sk-list li { margin-bottom: 12px; }
 
+    /* Rundown Styling */
+    .rundown-item { margin-bottom: 15px; display: flex; gap: 15px; }
+    .rundown-time { font-weight: 800; color: var(--accent); min-width: 80px; }
+    .rundown-desc strong { display: block; color: var(--primary); margin-bottom: 2px; }
+    .rundown-desc span { display: block; font-size: 0.9rem; color: var(--secondary); }
+
     /* === FOOTER (Hanya Profile - Center) === */
     .footer {
         background: #ffffff;
@@ -310,12 +316,46 @@
 
     <div id="tab-info" class="tab-content">
         <div class="card">
+            <h3 class="section-title">🕒 Rundown Kegiatan</h3>
+            <div class="rundown-item">
+                <div class="rundown-time">08.00 WIB</div>
+                <div class="rundown-desc">
+                    <strong>Registrasi & Briefing</strong>
+                    <span>• Kumpul di Basecamp TOS Adventure.</span>
+                    <span>• Pelunasan pembayaran & ganti pakaian.</span>
+                    <span>• Pemakaian alat safety (Helmet, Harness).</span>
+                    <span>• Penjelasan teknik rappelling oleh instruktur.</span>
+                </div>
+            </div>
+            <div class="rundown-item">
+                <div class="rundown-time">09.00 WIB</div>
+                <div class="rundown-desc">
+                    <strong>Adventure Time!</strong>
+                    <span>• Menuju lokasi start via shuttle.</span>
+                    <span>• Eksplorasi air terjun & rappelling.</span>
+                </div>
+            </div>
+            <div class="rundown-item">
+                <div class="rundown-time">14.30 WIB</div>
+                <div class="rundown-desc">
+                    <strong>Finish & Makan Siang</strong>
+                    <span>• Kembali ke basecamp, mandi, dan makan.</span>
+                    <span>• Kegiatan selesai.</span>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px; padding: 15px; background: var(--status-holiday-bg); border: 1px solid var(--status-holiday-border); border-radius: var(--radius-sm); color: var(--status-holiday-text); font-size: 0.9rem; line-height: 1.5;">
+                <strong>NB:</strong> Jika telat maka dikenakan biaya tambahan 100k untuk biaya tambahan guide, jasa angkut ke air terjun dll.
+            </div>
+        </div>
+
+        <div class="card">
             <h3 class="section-title">Syarat & Ketentuan</h3>
             <ul class="sk-list">
                 <li>Peserta dipastikan dalam keadaan sehat. Calon peserta dengan riwayat penyakit khusus wajib melapor sebelum *booking*.</li>
                 <li>Pemesanan dianggap valid hanya setelah pembayaran <strong>DP (Down Payment)</strong> diterima.</li>
                 <li>Pelunasan biaya trip dilakukan setibanya di Basecamp sebelum pengarahan (*briefing*) dimulai.</li>
-                <li><strong>Pembatalan:</strong> Pembatalan sepihak oleh peserta menyebabkan DP tidak dapat dikembalikan (*non-refundable*).</li>
+                <li><strong>Pembatalan:</strong> Pembatalan oleh peserta menyebabkan DP tidak dapat dikembalikan (*non-refundable*).</li>
                 <li><strong>Ubah Jadwal:</strong> Penyesuaian jadwal dapat dilakukan maksimal H-3, dengan syarat kuota hari pengganti masih tersedia.</li>
                 <li>Kegiatan bergantung pada kondisi alam. Pihak penyelenggara berhak penuh membatalkan atau menunda kegiatan jika terjadi cuaca ekstrem.</li>
             </ul>
@@ -356,7 +396,7 @@
     <div class="modal-content">
         <div class="m-header">
             <h4 id="crudTitle">Input Jadwal</h4>
-            <div onclick="closeCRUDModal()" style="font-size:26px; cursor:pointer; color: var(--secondary); line-height: 1;">&times;</div>
+            <div onclick="closeCRUDModal()" style="font-size:26px; cursor:pointer; color: var(--secondary); line-height: 1;">×</div>
         </div>
         <div class="m-body" id="crudFormBody"></div>
         <div class="m-footer">
@@ -369,7 +409,7 @@
     <div class="modal-content">
         <div class="m-header">
             <h4>Data Global (Semua Bulan)</h4>
-            <div onclick="document.getElementById('globalRecapModal').classList.remove('show')" style="font-size:26px; cursor:pointer; color: var(--secondary); line-height: 1;">&times;</div>
+            <div onclick="document.getElementById('globalRecapModal').classList.remove('show')" style="font-size:26px; cursor:pointer; color: var(--secondary); line-height: 1;">×</div>
         </div>
         <div class="m-body">
             <div id="globalTotalDisplay" class="global-total-big">Menghitung...</div>
@@ -602,25 +642,66 @@
         return result;
     }
 
-    // Optimized Search
     let searchTimeout;
     document.getElementById('searchInput').oninput = function() {
+        const keyword = this.value;
         clearTimeout(searchTimeout);
         searchTimeout = setTimeout(() => {
-            handleSearch(this.value);
-        }, 300);
+            handleSearch(keyword);
+        }, 500);
     };
 
-    function handleSearch(keyword) {
-        let rowsToRender = PROCESSED_CACHE;
-        if (keyword) {
-            const lowerKey = keyword.toLowerCase().trim();
-            rowsToRender = PROCESSED_CACHE.filter(item => {
-                return item.data.some(cell => String(cell).toLowerCase().includes(lowerKey));
+    async function handleSearch(keyword) {
+        const container = document.getElementById('scheduleList');
+        
+        if (!keyword || keyword.length <= 2) {
+            renderSchedule(CACHED_HEADERS, PROCESSED_CACHE, false);
+            return;
+        }
+
+        const lowerKey = keyword.toLowerCase().trim();
+        showLoading(true, "Mencari di semua bulan...");
+        
+        try {
+            let sheets = Cache.get('CP_SHEETS');
+            if (!sheets) return;
+
+            const promises = sheets.map(sheet => {
+                const cacheKey = `SHEET_DATA_${sheet.gid}`;
+                const cached = Cache.get(cacheKey);
+                if (cached) return Promise.resolve(cached);
+                return fetch(`${SCRIPT_URL}?gid=${sheet.gid}`).then(r => r.json());
             });
-            renderSchedule(CACHED_HEADERS, rowsToRender, true); 
-        } else {
-            renderSchedule(CACHED_HEADERS, rowsToRender, false);
+
+            const allResults = await Promise.all(promises);
+            let globalMatches = [];
+            let currentHeaders = CACHED_HEADERS;
+
+            allResults.forEach((rawData, index) => {
+                if (!rawData || rawData.length < 2) return;
+                const headers = rawData[0];
+                const rows = rawData.slice(1);
+                const processed = processData(rows);
+                
+                const matches = processed.filter(item => 
+                    item.data.some(cell => String(cell).toLowerCase().includes(lowerKey))
+                );
+
+                matches.forEach(m => {
+                    m.data[0] = `[${sheets[index].name}] ${m.data[0]}`;
+                    globalMatches.push(m);
+                });
+            });
+
+            if (globalMatches.length > 0) {
+                renderSchedule(currentHeaders, globalMatches, true);
+            } else {
+                container.innerHTML = `<div class='card' style='text-align:center; color:var(--secondary);'>Tidak ditemukan "${keyword}" di bulan manapun.</div>`;
+            }
+        } catch (err) {
+            console.error("Global search error:", err);
+        } finally {
+            showLoading(false);
         }
     }
 
@@ -682,7 +763,6 @@
             let items = groups[date];
             let totalGuest = items.reduce((sum, item) => sum + (parseInt(item.data[paxIndexCalc]) || 0), 0);
             
-            // --- LOGIKA SLOT & JUMAT ---
             let maxSlot = 20;
             let sisaSlot = maxSlot - totalGuest;
             if (sisaSlot < 0) sisaSlot = 0; 
@@ -839,7 +919,6 @@
         }
     }
 
-    // === PARSING TANGGAL ===
     function parseAnyDate(dateStr) {
         if (!dateStr) return null;
         let cleanDate = dateStr.toString().trim();
@@ -882,7 +961,6 @@
         return `${year}-${month}-${day}`;
     }
 
-    // === GLOBAL RECAP (Admin Only) ===
     async function openGlobalRecap() {
         if (!IS_RECAP) return; 
         const modal = document.getElementById('globalRecapModal');
