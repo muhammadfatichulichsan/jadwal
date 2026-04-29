@@ -35,10 +35,10 @@
 <style>
     /* === SOFT BRAND COLOR THEME === */
     :root {
-        --primary: #2C3E50; /* Soft Slate / Dark Blue-Gray */
+        --primary: #2C3E50; 
         --primary-light: #34495E;
-        --secondary: #7F8C8D; /* Muted Gray */
-        --accent: #45B39D; /* Soft Teal / Mint - Mewakili Air & Alam */
+        --secondary: #7F8C8D; 
+        --accent: #45B39D; 
         --accent-hover: #16A085;
         
         /* Status Colors - Soft Pastels */
@@ -46,7 +46,7 @@
         --status-full-bg: #FDEDEC; --status-full-text: #C0392B; --status-full-border: #F5B7B1;
         --status-holiday-bg: #FEF9E7; --status-holiday-text: #B9770E; --status-holiday-border: #F9E79F;
         
-        --bg: #F8F9F9; /* Off-white yang sangat lembut */
+        --bg: #F8F9F9; 
         --card-bg: #ffffff;
         --text-main: #2C3E50;
         --text-muted: #7F8C8D;
@@ -96,7 +96,7 @@
     .btn-global-recap { display:none; background: var(--accent); border: 1px solid var(--accent); color: white; padding: 8px 18px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
     .btn-global-recap:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
 
-    /* === HERO SECTION (Soft & Clean) === */
+    /* === HERO SECTION === */
     .hero {
         padding: 150px 5% 80px;
         text-align: center;
@@ -109,7 +109,7 @@
     /* === PORTAL SECTION === */
     .portal-container { max-width: 900px; margin: 50px auto; padding: 0 5%; }
     
-    /* Tabs (Soft Design) */
+    /* Tabs */
     .tab-menu { display: flex; justify-content: center; border-bottom: 2px solid var(--border); margin-bottom: 35px; gap: 5px; flex-wrap: wrap;}
     .tab-btn { padding: 12px 20px; border: none; background: transparent; color: var(--secondary); font-weight: 600; font-size: 0.95rem; font-family: inherit; cursor: pointer; transition: all 0.2s; border-bottom: 3px solid transparent; margin-bottom: -2px; }
     .tab-btn:hover { color: var(--accent); }
@@ -123,12 +123,13 @@
     .card { background: var(--card-bg); border-radius: var(--radius-md); border: 1px solid var(--border); padding: 30px; margin-bottom: 25px; box-shadow: var(--shadow-sm); }
     .section-title { font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 20px; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px;}
 
-    .controls { display: grid; grid-template-columns: 1fr 1.5fr; gap: 20px; }
+    .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 15px; }
     @media (max-width: 600px) { .controls { grid-template-columns: 1fr; } }
     .control-group label { font-size: 0.8rem; font-weight: 700; color: var(--secondary); text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 0.5px; }
     
     select, .search-input { width: 100%; padding: 14px 16px; font-size: 0.95rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background-color: #fff; color: var(--text-main); font-family: inherit; transition: all 0.2s; outline: none; }
     select:focus, .search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(69, 179, 157, 0.15); }
+    select:disabled, .search-input:disabled { background-color: #f1f1f1; cursor: not-allowed; }
     
     .search-wrapper { position: relative; }
     .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--secondary); pointer-events: none; }
@@ -149,10 +150,13 @@
     td { padding: 14px 20px; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: middle; font-weight: 500; }
     tr:last-child td { border-bottom: none; }
 
-    /* Admin Buttons */
+    /* Admin & Booking Buttons */
     .btn-group { display: flex; gap: 8px; }
     .btn-icon { background: white; border: 1px solid var(--border); width: 34px; height: 34px; border-radius: 8px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; color: var(--secondary); }
     .btn-icon:hover { border-color: var(--accent); color: var(--accent); background: var(--status-ok-bg); }
+    
+    .btn-booking { background: var(--accent); color: white; border: none; padding: 6px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px; }
+    .btn-booking:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 4px 10px rgba(69, 179, 157, 0.2); }
 
     /* Map & Info Container */
     .map-container { position: relative; padding-bottom: 55%; height: 0; overflow: hidden; border-radius: var(--radius-sm); border: 1px solid var(--border); margin-bottom: 25px; }
@@ -173,7 +177,7 @@
     .rundown-desc strong { display: block; color: var(--primary); margin-bottom: 2px; }
     .rundown-desc span { display: block; font-size: 0.9rem; color: var(--secondary); }
 
-    /* === FOOTER (Hanya Profile - Center) === */
+    /* === FOOTER === */
     .footer {
         background: #ffffff;
         color: var(--text-main);
@@ -217,13 +221,14 @@
     
     .m-header { padding: 20px 25px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
     .m-header h4 { margin: 0; font-size: 1.15rem; color: var(--primary); font-weight: 700; }
-    .m-body { flex: 1; overflow-y: auto; padding: 25px; }
+    .m-body { flex: 1; overflow-y: auto; padding: 25px; scroll-behavior: smooth; }
     .m-footer { padding: 15px 25px; border-top: 1px solid var(--border); background: var(--bg); border-radius: 0 0 var(--radius-md) var(--radius-md); }
     
     .form-group { margin-bottom: 18px; }
     .form-label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.85rem; color: var(--primary); }
-    .form-input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.95rem; font-family: inherit; background: #fff; transition: all 0.2s; outline: none; }
-    .form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(69, 179, 157, 0.15); }
+    .form-input, .form-textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.95rem; font-family: inherit; background: #fff; transition: all 0.2s; outline: none; }
+    .form-input:focus, .form-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(69, 179, 157, 0.15); }
+    .form-textarea { resize: vertical; min-height: 100px; }
     
     .btn-block { width: 100%; padding: 14px; border: none; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px; }
     .btn-primary { background: var(--accent); color: white; }
@@ -237,7 +242,7 @@
     #syncToast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; padding: 12px 24px; border-radius: 30px; font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 10px; box-shadow: var(--shadow-md); z-index: 2999; opacity: 0; pointer-events: none; transition: all 0.3s ease; transform: translate(-50%, 15px); }
     #syncToast.show { opacity: 1; transform: translate(-50%, 0); }
 
-    /* Rekap Styling (Admin Only) */
+    /* Rekap Styling */
     .recap-grid { display: grid; grid-template-columns: 1fr auto; gap: 8px; font-size: 0.95rem; }
     .recap-row { display: contents; }
     .recap-val { font-weight: 700; text-align: right; color: var(--primary); }
@@ -257,8 +262,8 @@
 </nav>
 
 <header class="hero">
-    <h1>Cek Jadwal Canyoning</h1>
-    <p>Portal pemesanan dan informasi kuota resmi Canyoning Pacet. Aman, profesional, dan *real-time*.</p>
+    <h1>Cek Jadwal Trip Kami</h1>
+    <p>Portal pemesanan dan informasi kuota resmi Air Terjun Cowang 35 M & Air Terjun Canggu 60M. Aman, profesional, dan *real-time*.</p>
 </header>
 
 <div class="portal-container">
@@ -270,22 +275,30 @@
     </div>
 
     <div id="tab-jadwal" class="tab-content active">
-        <div id="recapContainer" class="card" style="background: var(--primary); color: white; border: none; padding: 25px;">
-            <div style="font-weight: 700; font-size: 0.9rem; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; color: var(--secondary);">📊 Kinerja PIC Bulan Ini</div>
-            <div class="recap-grid" id="recapBody"></div>
-            <div class="recap-grid" id="recapTotal" style="color: var(--accent); border-top: 1px solid var(--primary-light); margin-top: 15px; padding-top: 15px; font-weight: 800;"></div>
-        </div>
-
+        
         <div class="card controls">
+            <div class="control-group">
+                <label>Pilih Tipe Trip</label>
+                <select id="tripTypeSelector" onchange="changeTripType(this.value)">
+                    <option value="COWANG">Air Terjun Cowang 35 M (Rp 300.000)</option>
+                    <option value="CANGGU">Air Terjun Canggu 60M (Rp 400.000)</option>
+                </select>
+            </div>
             <div class="control-group">
                 <label>Pilih Periode Bulan</label>
                 <select id="sheetSelector" onchange="loadSheetData(this.value, false)"></select>
             </div>
-            <div class="control-group search-wrapper">
-                <label>Pencarian Data</label>
-                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                <input type="text" id="searchInput" class="search-input" placeholder="Cari nama, pax, atau catatan...">
-            </div>
+        </div>
+
+        <div class="search-wrapper" style="margin-bottom: 25px;">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="searchInput" class="search-input" placeholder="Cari nama, pax, atau catatan...">
+        </div>
+
+        <div id="recapContainer" class="card" style="display:none; background: var(--primary); color: white; border: none; padding: 25px;">
+            <div style="font-weight: 700; font-size: 0.9rem; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; color: var(--secondary);">📊 Kinerja PIC Bulan Ini</div>
+            <div class="recap-grid" id="recapBody"></div>
+            <div class="recap-grid" id="recapTotal" style="color: var(--accent); border-top: 1px solid var(--primary-light); margin-top: 15px; padding-top: 15px; font-weight: 800;"></div>
         </div>
 
         <div id="scheduleList"></div>
@@ -421,20 +434,114 @@
     </div>
 </div>
 
+<div id="bookingModal" class="modal">
+    <div class="modal-content">
+        <div class="m-header">
+            <h4>Form Registrasi Booking</h4>
+            <div onclick="closeBookingModal()" style="font-size:26px; cursor:pointer; color: var(--secondary); line-height: 1;">×</div>
+        </div>
+        <div class="m-body">
+            <div style="margin-bottom: 20px; padding: 12px; background: var(--status-ok-bg); border: 1px solid var(--status-ok-border); border-radius: 6px; font-weight: 600; color: var(--status-ok-text);">
+                <div style="font-size: 0.8rem; color: var(--secondary); text-transform: uppercase;">Jenis Trip: <span id="bookingTypeDisplay" style="color: var(--primary);"></span></div>
+                📅 Tanggal Booking: <span id="bookingDateDisplay" style="font-weight: 800;"></span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Nama Koordinator / Perwakilan</label>
+                <input type="text" id="b_nama" class="form-input" placeholder="Masukkan nama...">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Jumlah Peserta (Pax)</label>
+                <input type="number" id="b_pax" class="form-input" placeholder="Contoh: 10" oninput="calculateTotal()">
+            </div>
+
+            <div style="background:var(--bg); padding:12px; border-radius:8px; margin-bottom:18px; border: 1px solid var(--border);">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <input type="checkbox" id="b_sewa_sepatu" onchange="toggleShoeFields(this.checked)" style="width:18px; height:18px; cursor:pointer;">
+                    <label for="b_sewa_sepatu" style="font-weight:600; font-size:0.85rem; cursor:pointer; color: var(--primary);">Tambah Sewa Sepatu (+Rp 15.000/pasang)</label>
+                </div>
+                
+                <div id="shoe_fields" style="display:none; margin-top:15px;">
+                    <div class="form-group">
+                        <label class="form-label">Jumlah Sepatu</label>
+                        <input type="number" id="b_shoe_qty" class="form-input" placeholder="Contoh: 5" oninput="calculateTotal()">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Catatan Ukuran (Size)</label>
+                        <input type="text" id="b_shoe_sizes" class="form-input" placeholder="Contoh: 39(2), 40(1)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">No. WhatsApp</label>
+                <input type="tel" id="b_wa" class="form-input" placeholder="Contoh: 08123456789">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Domisili / Asal Kota</label>
+                <input type="text" id="b_domisili" class="form-input" placeholder="Contoh: Surabaya">
+            </div>
+
+            <div style="background: #f8fcfb; border: 1px dashed var(--accent); border-radius: 8px; padding: 15px; margin-bottom: 18px; font-size: 0.9rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span style="color: var(--secondary);" id="label_harga_trip">Total Trip</span>
+                    <strong style="color: var(--primary);" id="p_trip">Rp 0</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span style="color: var(--secondary);">Total Sepatu (Rp 15rb/psg)</span>
+                    <strong style="color: var(--primary);" id="p_sepatu">Rp 0</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 8px; margin-top: 8px;">
+                    <span style="color: var(--primary); font-weight: 700;">Total DP Wajib (Rp 50rb/pax)</span>
+                    <strong style="color: var(--accent); font-size: 1.05rem;" id="p_dp">Rp 0</strong>
+                </div>
+            </div>
+
+            <button class="btn-block btn-primary" onclick="generateBookingText()" style="margin-top: 10px;">📋 Generate Pesanan</button>
+
+            <div id="copyResultContainer" style="display:none; margin-top: 25px;">
+                <label class="form-label" style="color: var(--primary);">Data pesanan siap! Silakan Copy lalu Paste ke WhatsApp:</label>
+                <textarea id="copyResultText" class="form-textarea" readonly></textarea>
+                <button class="btn-block" style="margin-top: 12px; background: var(--primary); color: white;" onclick="copyToClipboard()">Salin Data Pesanan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    // === HARGA KONFIGURASI ===
+    const PRICE_COWANG = 300000;
+    const PRICE_CANGGU = 400000;
+    const PRICE_SHOE = 15000;
+    const MIN_DP_PER_PAX = 50000;
+
+    let CURRENT_TRIP_TYPE = "COWANG"; // Default
+    let SCRIPT_URL_COWANG = "https://script.google.com/macros/s/AKfycbx_M5BxmfqrI8e4dlaJ-pu4Fxk1zB6tXMF8zc6mfS4NLmvr_WB2SljGp3LHUa0iQTMymw/exec"; 
+    let SCRIPT_URL_CANGGU = "https://script.google.com/macros/s/AKfycbx_M5BxmfqrI8e4dlaJ-pu4Fxk1zB6tXMF8zc6mfS4NLmvr_WB2SljGp3LHUa0iQTMymw/exec"; 
+    
+    // Fungsi mendapatkan URL Script yang aktif
+    function getActiveScriptURL() {
+        return CURRENT_TRIP_TYPE === "CANGGU" ? SCRIPT_URL_CANGGU : SCRIPT_URL_COWANG;
+    }
+
     // === UI LOGIC ===
     function switchTab(tabId, btnElement) {
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         btnElement.classList.add('active');
-        window.scrollTo(0, 0); // Scroll to top on tab change
+        window.scrollTo(0, 0); 
     }
 
-    // === CORE SYSTEM LOGIC (UNTOUCHED) ===
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_M5BxmfqrI8e4dlaJ-pu4Fxk1zB6tXMF8zc6mfS4NLmvr_WB2SljGp3LHUa0iQTMymw/exec"; 
-    
-    // PASSWORD SYSTEM
+    function changeTripType(type) {
+        CURRENT_TRIP_TYPE = type;
+        Cache.remove('CP_SHEETS_' + type); 
+        initDataLoad();
+    }
+
+    // === CORE SYSTEM LOGIC ===
     const ADMIN_PASS = "1234tos"; 
     const RECAP_PASS = "data"; 
     
@@ -455,23 +562,45 @@
         remove: (key) => localStorage.removeItem(key)
     };
 
-    document.addEventListener("DOMContentLoaded", init);
+    document.addEventListener("DOMContentLoaded", function() {
+        checkSession();
+        initDataLoad();
+    });
 
-    async function init() {
-        checkSession(); 
-        const cachedSheets = Cache.get('CP_SHEETS');
+    async function initDataLoad() {
+        // Tampilkan COMING SOON jika kategori yang dipilih adalah CANGGU
+        if (CURRENT_TRIP_TYPE === "CANGGU") {
+            document.getElementById('sheetSelector').innerHTML = '<option value="">Segera Hadir</option>';
+            document.getElementById('sheetSelector').disabled = true;
+            document.getElementById('searchInput').disabled = true;
+            document.getElementById('scheduleList').innerHTML = `
+                <div class="card" style="text-align: center; padding: 60px 20px;">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">🚧</div>
+                    <h3 style="color: var(--primary); margin-bottom: 10px;">Segera Hadir</h3>
+                    <p style="color: var(--secondary);">Jadwal untuk <strong>Air Terjun Canggu 60M</strong> sedang dalam persiapan. Nantikan update kami selanjutnya!</p>
+                </div>
+            `;
+            return;
+        }
+
+        document.getElementById('sheetSelector').disabled = false;
+        document.getElementById('searchInput').disabled = false;
+
+        const cacheKey = 'CP_SHEETS_' + CURRENT_TRIP_TYPE;
+        const cachedSheets = Cache.get(cacheKey);
+        
         if (cachedSheets) {
             populateSheetSelector(cachedSheets);
             autoSelectSheet(cachedSheets, true); 
         } else {
-            showLoading(true, "Memuat Data Server...");
+            showLoading(true, "Memuat Data Server " + CURRENT_TRIP_TYPE + "...");
         }
 
         try {
-            let response = await fetch(SCRIPT_URL);
+            let response = await fetch(getActiveScriptURL());
             let sheets = await response.json();
             
-            Cache.set('CP_SHEETS', sheets); 
+            Cache.set(cacheKey, sheets); 
             populateSheetSelector(sheets);
             
             if (!cachedSheets) {
@@ -581,7 +710,7 @@
         CURRENT_GID = gid;
         document.getElementById('searchInput').value = ""; 
         const container = document.getElementById('scheduleList');
-        const cacheKey = `SHEET_DATA_${gid}`;
+        const cacheKey = `SHEET_DATA_${CURRENT_TRIP_TYPE}_${gid}`;
         const cachedData = Cache.get(cacheKey);
         
         if (cachedData) {
@@ -591,7 +720,7 @@
         }
 
         try {
-            let res = await fetch(`${SCRIPT_URL}?gid=${gid}`);
+            let res = await fetch(`${getActiveScriptURL()}?gid=${gid}`);
             let rawData = await res.json();
             
             Cache.set(cacheKey, rawData);
@@ -652,6 +781,8 @@
     };
 
     async function handleSearch(keyword) {
+        if (CURRENT_TRIP_TYPE === "CANGGU") return;
+        
         const container = document.getElementById('scheduleList');
         
         if (!keyword || keyword.length <= 2) {
@@ -663,14 +794,14 @@
         showLoading(true, "Mencari di semua bulan...");
         
         try {
-            let sheets = Cache.get('CP_SHEETS');
+            let sheets = Cache.get('CP_SHEETS_' + CURRENT_TRIP_TYPE);
             if (!sheets) return;
 
             const promises = sheets.map(sheet => {
-                const cacheKey = `SHEET_DATA_${sheet.gid}`;
+                const cacheKey = `SHEET_DATA_${CURRENT_TRIP_TYPE}_${sheet.gid}`;
                 const cached = Cache.get(cacheKey);
                 if (cached) return Promise.resolve(cached);
-                return fetch(`${SCRIPT_URL}?gid=${sheet.gid}`).then(r => r.json());
+                return fetch(`${getActiveScriptURL()}?gid=${sheet.gid}`).then(r => r.json());
             });
 
             const allResults = await Promise.all(promises);
@@ -790,11 +921,19 @@
             
             let bodyStyle = expandAll ? `style="max-height: 1000vh;"` : ""; 
 
+            // INJEKSI TOMBOL BOOKING
+            let bookingBtnHtml = (!isFull && !isFriday) 
+                ? `<button class="btn-booking" onclick="openBookingModal(event, '${date}')">Booking</button>` 
+                : '';
+
             htmlContent += `
                 <div class="accordion-item">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
                         <span class="date">${date}</span>
-                        <span class="count" style="${badgeStyle}">${badgeText}</span>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <span class="count" style="${badgeStyle}">${badgeText}</span>
+                            ${bookingBtnHtml}
+                        </div>
                     </div>
                     <div class="accordion-body" ${bodyStyle}>
                         <div class="table-responsive">
@@ -833,7 +972,143 @@
         }
     }
 
+    // === LOGIC FORM BOOKING === //
+    function toggleShoeFields(show) {
+        document.getElementById('shoe_fields').style.display = show ? 'block' : 'none';
+        if(!show) {
+            document.getElementById('b_shoe_qty').value = "";
+            document.getElementById('b_shoe_sizes').value = "";
+        }
+        calculateTotal();
+    }
+
+    function getBasePrice() {
+        return CURRENT_TRIP_TYPE === "CANGGU" ? PRICE_CANGGU : PRICE_COWANG;
+    }
+
+    function calculateTotal() {
+        let pax = parseInt(document.getElementById('b_pax').value) || 0;
+        let isSewaSepatu = document.getElementById('b_sewa_sepatu').checked;
+        let shoeQty = parseInt(document.getElementById('b_shoe_qty').value) || 0;
+        
+        let basePrice = getBasePrice();
+        let totalTrip = pax * basePrice;
+        let totalShoe = isSewaSepatu ? (shoeQty * PRICE_SHOE) : 0;
+        let totalDP = pax * MIN_DP_PER_PAX;
+
+        // Label dinamis menyesuaikan harga trip terpilih
+        let formatBase = (basePrice/1000).toLocaleString('id-ID');
+        document.getElementById('label_harga_trip').innerText = `Total Trip (Rp ${formatBase}rb/pax)`;
+
+        // Tampilkan format mata uang
+        document.getElementById('p_trip').innerText = "Rp " + totalTrip.toLocaleString('id-ID');
+        document.getElementById('p_sepatu').innerText = "Rp " + totalShoe.toLocaleString('id-ID');
+        document.getElementById('p_dp').innerText = "Rp " + totalDP.toLocaleString('id-ID');
+    }
+
+    function openBookingModal(event, date) {
+        event.stopPropagation(); // Cegah Accordion terbuka saat tombol booking diklik
+        
+        let typeName = CURRENT_TRIP_TYPE === "CANGGU" ? "Air Terjun Canggu 60M" : "Air Terjun Cowang 35 M";
+        
+        // Reset Form
+        document.getElementById('bookingTypeDisplay').innerText = typeName;
+        document.getElementById('bookingDateDisplay').innerText = date;
+        document.getElementById('b_nama').value = '';
+        document.getElementById('b_pax').value = '';
+        document.getElementById('b_wa').value = '';
+        document.getElementById('b_domisili').value = '';
+        
+        document.getElementById('b_sewa_sepatu').checked = false;
+        toggleShoeFields(false);
+        calculateTotal(); // reset hitungan jadi 0
+
+        document.getElementById('copyResultContainer').style.display = 'none';
+        document.getElementById('copyResultText').value = '';
+        
+        document.getElementById('bookingModal').classList.add('show');
+    }
+
+    function closeBookingModal() {
+        document.getElementById('bookingModal').classList.remove('show');
+    }
+
+    function generateBookingText() {
+        let date = document.getElementById('bookingDateDisplay').innerText;
+        let typeName = document.getElementById('bookingTypeDisplay').innerText;
+        let nama = document.getElementById('b_nama').value.trim();
+        let pax = document.getElementById('b_pax').value.trim();
+        let wa = document.getElementById('b_wa').value.trim();
+        let domisili = document.getElementById('b_domisili').value.trim();
+        let isSewaSepatu = document.getElementById('b_sewa_sepatu').checked;
+        let shoeQty = document.getElementById('b_shoe_qty').value.trim();
+        let shoeSizes = document.getElementById('b_shoe_sizes').value.trim();
+
+        if(!nama || !pax || !wa) {
+            alert("Harap lengkapi Nama, Jumlah Pax, dan No WhatsApp!");
+            return;
+        }
+
+        let numPax = parseInt(pax) || 0;
+        let numShoe = isSewaSepatu ? (parseInt(shoeQty) || 0) : 0;
+        
+        let totalTrip = numPax * getBasePrice();
+        let totalShoe = numShoe * PRICE_SHOE;
+        let grandTotal = totalTrip + totalShoe;
+        let totalDP = numPax * MIN_DP_PER_PAX;
+
+        let template = `Halo Admin Canyoning Pacet,\n\nSaya ingin melakukan Booking *${typeName}* dengan detail pesanan berikut:\n\n`;
+        template += `📅 Tanggal: ${date}\n`;
+        template += `👤 Nama: ${nama}\n`;
+        template += `👥 Jumlah Peserta: ${numPax} Orang\n`;
+        
+        if(isSewaSepatu && numShoe > 0) {
+            template += `👟 Sewa Sepatu: ${numShoe} pasang (Size: ${shoeSizes || '-'}) \n`;
+        }
+
+        template += `📱 No WA: ${wa}\n`;
+        template += `📍 Domisili: ${domisili}\n\n`;
+
+        template += `*Rincian Biaya:*\n`;
+        template += `- Trip: Rp ${totalTrip.toLocaleString('id-ID')}\n`;
+        if(isSewaSepatu && numShoe > 0) {
+            template += `- Sewa Sepatu: Rp ${totalShoe.toLocaleString('id-ID')}\n`;
+        }
+        template += `*Total Biaya: Rp ${grandTotal.toLocaleString('id-ID')}*\n`;
+        template += `*Wajib DP (Minimal): Rp ${totalDP.toLocaleString('id-ID')}*\n\n`;
+
+        template += `Mohon konfirmasi ketersediaan dan instruksi/nomor rekening untuk pembayaran DP. Terima kasih!`;
+
+        document.getElementById('copyResultText').value = template;
+        
+        let container = document.getElementById('copyResultContainer');
+        container.style.display = 'block';
+        
+        // Auto scroll ke area hasil copy
+        setTimeout(() => {
+            container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 50);
+    }
+
+    function copyToClipboard() {
+        let copyText = document.getElementById('copyResultText');
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // Kompatibilitas Mobile
+        
+        navigator.clipboard.writeText(copyText.value).then(() => {
+            alert("Data pesanan berhasil disalin! Silakan paste (tempel) di chat WhatsApp admin kami.");
+        }).catch(err => {
+            alert("Gagal meng-copy teks otomatis. Silakan blok tulisan dan copy secara manual.");
+        });
+    }
+    // =========================================== //
+
     function openCRUDModal(action, item = null) {
+        if (action === 'CREATE' && CURRENT_TRIP_TYPE === "CANGGU") {
+            alert("Input jadwal Air Terjun Canggu belum dibuka.");
+            return;
+        }
+
         CURRENT_ACTION = action;
         const modal = document.getElementById('crudModal');
         const title = document.getElementById('crudTitle');
@@ -841,6 +1116,23 @@
         body.innerHTML = "";
         title.innerText = (action === 'CREATE') ? "📝 Form Tambah Jadwal" : "✏️ Edit Jadwal";
         if (action === 'UPDATE' && item) EDIT_ROW_INDEX = item.rowIndex;
+
+        // Tambahkan Opsi Destinasi Sheet saat Create
+        if (action === 'CREATE') {
+            const sheets = Cache.get('CP_SHEETS_' + CURRENT_TRIP_TYPE) || [];
+            let sheetOptions = sheets.map(s => `<option value="${s.gid}" ${s.gid === CURRENT_GID ? 'selected' : ''}>${s.name}</option>`).join('');
+            
+            body.innerHTML += `
+                <div class="form-group" style="background: var(--bg); padding: 10px; border-radius: 6px;">
+                    <label class="form-label" style="color: var(--accent); font-weight: 800;">Simpan ke Bulan:</label>
+                    <select id="destinationGid" class="form-input" style="border: 1px solid var(--accent);">
+                        ${sheetOptions}
+                    </select>
+                </div>
+                <hr style="margin-bottom: 20px; border: 0; border-top: 1px solid var(--border);">
+            `;
+        }
+
         CACHED_HEADERS.forEach((header, index) => {
             let val = (action === 'UPDATE' && item) ? item.data[index] : "";
             let isHidden = HIDE_KEYWORDS.some(k => header.toLowerCase().includes(k));
@@ -867,8 +1159,12 @@
 
     async function submitCRUD() {
         if (!confirm("Konfirmasi penyimpanan data?")) return;
+        
+        const destGid = document.getElementById('destinationGid') ? document.getElementById('destinationGid').value : CURRENT_GID;
+        
         showLoading(true, "Merekam ke Basis Data...");
         closeCRUDModal();
+        
         let inputs = document.querySelectorAll('.crud-input');
         let newData = [];
         inputs.forEach(inp => {
@@ -876,25 +1172,23 @@
             if(inp.getAttribute('data-type') === 'date' && val) val = formatIsoToIndo(val); 
             newData.push(val);
         });
-        let payload = { action: CURRENT_ACTION, gid: CURRENT_GID, data: newData, rowIndex: EDIT_ROW_INDEX };
-        await sendToAppsScript(payload);
-    }
 
-    async function confirmDelete(rowIndex, name) {
-        if (confirm(`Peringatan: Hapus data "${name}" secara permanen?`)) {
-            showLoading(true, "Mengeksekusi penghapusan...");
-            let payload = { action: "DELETE", gid: CURRENT_GID, rowIndex: rowIndex, data: [] };
-            await sendToAppsScript(payload);
-        }
-    }
-
-    async function sendToAppsScript(payload) {
+        let payload = { 
+            action: CURRENT_ACTION, 
+            gid: destGid, 
+            data: newData, 
+            rowIndex: EDIT_ROW_INDEX 
+        };
+        
         try {
-            Cache.remove(`SHEET_DATA_${CURRENT_GID}`);
-            let res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+            Cache.remove(`SHEET_DATA_${CURRENT_TRIP_TYPE}_${destGid}`);
+            let res = await fetch(getActiveScriptURL(), { method: "POST", body: JSON.stringify(payload) });
             let result = await res.json();
             if (result.status === "SUCCESS") {
-                loadSheetData(CURRENT_GID, false); 
+                if (destGid !== CURRENT_GID) {
+                    document.getElementById('sheetSelector').value = destGid;
+                }
+                loadSheetData(destGid, false); 
             } else {
                 alert("Gagal: " + result.message);
                 showLoading(false);
@@ -902,6 +1196,27 @@
         } catch (err) {
             alert("Kesalahan Sistem: Gagal menghubungi server.");
             showLoading(false);
+        }
+    }
+
+    async function confirmDelete(rowIndex, name) {
+        if (confirm(`Peringatan: Hapus data "${name}" secara permanen?`)) {
+            showLoading(true, "Mengeksekusi penghapusan...");
+            let payload = { action: "DELETE", gid: CURRENT_GID, rowIndex: rowIndex, data: [] };
+            try {
+                Cache.remove(`SHEET_DATA_${CURRENT_TRIP_TYPE}_${CURRENT_GID}`);
+                let res = await fetch(getActiveScriptURL(), { method: "POST", body: JSON.stringify(payload) });
+                let result = await res.json();
+                if (result.status === "SUCCESS") {
+                    loadSheetData(CURRENT_GID, false); 
+                } else {
+                    alert("Gagal: " + result.message);
+                    showLoading(false);
+                }
+            } catch (err) {
+                alert("Kesalahan Sistem: Gagal menghubungi server.");
+                showLoading(false);
+            }
         }
     }
 
@@ -963,6 +1278,12 @@
 
     async function openGlobalRecap() {
         if (!IS_RECAP) return; 
+        
+        if (CURRENT_TRIP_TYPE === "CANGGU") {
+            alert("Data Global untuk Air Terjun Canggu belum tersedia (Segera Hadir).");
+            return;
+        }
+
         const modal = document.getElementById('globalRecapModal');
         const listContainer = document.getElementById('globalRecapList');
         const totalContainer = document.getElementById('globalTotalDisplay');
@@ -970,14 +1291,14 @@
         listContainer.innerHTML = "<div style='text-align:center; padding: 20px;'>Memanggil data dari server...</div>";
         showLoading(true, "Memproses Data Global...");
         try {
-            let sheets = Cache.get('CP_SHEETS');
+            let sheets = Cache.get('CP_SHEETS_' + CURRENT_TRIP_TYPE);
             if (!sheets) {
-                let response = await fetch(SCRIPT_URL);
+                let response = await fetch(getActiveScriptURL());
                 sheets = await response.json();
-                Cache.set('CP_SHEETS', sheets);
+                Cache.set('CP_SHEETS_' + CURRENT_TRIP_TYPE, sheets);
             }
             const promises = sheets.map(sheet => 
-                fetch(`${SCRIPT_URL}?gid=${sheet.gid}`).then(r => r.json()).catch(e => null) 
+                fetch(`${getActiveScriptURL()}?gid=${sheet.gid}`).then(r => r.json()).catch(e => null) 
             );
             const allResults = await Promise.all(promises);
             let globalStats = {};
