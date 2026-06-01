@@ -272,6 +272,7 @@
         <button class="tab-btn active" onclick="switchTab('tab-jadwal', this)">Informasi Kuota</button>
         <button class="tab-btn" onclick="switchTab('tab-lokasi', this)">Titik Kumpul</button>
         <button class="tab-btn" onclick="switchTab('tab-info', this)">Ketentuan & FAQ</button>
+        <button class="tab-btn" onclick="switchTab('tab-dokumentasi', this)">Dokumentasi Drive</button>
     </div>
 
     <div id="tab-jadwal" class="tab-content active">
@@ -320,7 +321,7 @@
             <div style="background: var(--bg); padding: 20px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
                 <strong style="color: var(--primary); font-size: 1rem; display: block; margin-bottom: 5px;">Alamat Lengkap:</strong>
                 <span style="color: var(--secondary); font-size: 0.9rem; font-weight: 400; line-height: 1.5;">
-                    Banding, Padusan, Kec. Pacet, Kabupaten Mojokerto, Jawa Timur 61374<br>
+                    Jl. Wisata Air Panas KM. 0, Padusan, Hutan, Kec. Pacet, Kabupaten Mojokerto, Jawa Timur 61374<br>
                     (Berada di dalam area Kawasan Wisata Air Panas Padusan)
                 </span>
             </div>
@@ -390,6 +391,22 @@
             <div class="faq-item">
                 <div class="faq-q">Bagaimana jika cuaca hujan pada hari H?</div>
                 <div class="faq-a">Hujan gerimis ringan tidak menghalangi kegiatan. Namun jika terjadi hujan badai atau peningkatan debit air yang dinilai berbahaya oleh instruktur, kegiatan akan ditunda/dijadwalkan ulang. Keamanan adalah prioritas utama.</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- === TAB BARU: DOKUMENTASI DRIVE === -->
+    <div id="tab-dokumentasi" class="tab-content">
+        <div class="card">
+            <h3 class="section-title">📁 Dokumentasi Drive</h3>
+            
+            <div style="margin-bottom: 20px; padding: 15px; background: var(--status-holiday-bg); border: 1px solid var(--status-holiday-border); border-radius: var(--radius-sm); color: var(--status-holiday-text); font-size: 0.9rem; line-height: 1.5;">
+                <strong>Note:</strong> Batas waktu akses file foto dan video di link dokumentasi ini adalah <strong>1 bulan</strong> setelah trip berlangsung. Pastikan Anda segera mengunduh file dokumentasi sebelum batas waktu habis.
+            </div>
+            
+            <div class="map-container" style="padding-bottom: 65%;">
+                <!-- Merubah #list menjadi #grid untuk menghilangkan kolom detail metadata -->
+                <iframe src="https://drive.google.com/embeddedfolderview?id=1kWRrC7vSgDQJAN7of8YWlur4W6Auecmq#grid" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
             </div>
         </div>
     </div>
