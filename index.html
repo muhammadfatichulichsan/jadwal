@@ -909,7 +909,13 @@
             let items = groups[date];
             let totalGuest = items.reduce((sum, item) => sum + (parseInt(item.data[paxIndexCalc]) || 0), 0);
             
+            // MODIFIKASI: Logika Slot Khusus Juli 2026 s/d Tanggal 20
             let maxSlot = 20;
+            let dateMatch = date.match(/(\d{1,2})\s+juli\s+2026/i);
+            if (dateMatch && parseInt(dateMatch[1]) <= 20) {
+                maxSlot = 25;
+            }
+            
             let sisaSlot = maxSlot - totalGuest;
             if (sisaSlot < 0) sisaSlot = 0; 
             
